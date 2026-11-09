@@ -1,0 +1,35 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* Print: cv.html comes out as a clean black-on-white page */
+
+@page { margin: 16mm; }
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+    font-style: normal;
+  }
+  .site-nav, .site-footer, .cv-toolbar, .site-header .avatar, .site-header::after { display: none; }
+
+  .site-header { padding: 0 0 1rem; }
+  .site-header h1, .page-title {
+    background: none;
+    color: #000;
+    -webkit-text-fill-color: #000;
+    filter: none;
+  }
+  .site-header .subtitle { color: #333; }
+
+  .page { padding: 0; }
+  .cv { max-width: none; }
+  .cv-section { margin-top: 1.4rem; break-inside: avoid-page; }
+  .cv-section > h3 { color: #000; border-bottom-color: #000; }
+  .cv-entry { break-inside: avoid; border-bottom-color: #bbb; }
+  .cv-entry h4 { color: #000; }
+  .cv-entry .cv-when { color: #333; }
+  .cv-tags li { border-color: #000; }
+  a { color: #000; text-decoration: none; }
+}

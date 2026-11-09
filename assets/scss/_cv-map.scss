@@ -1,0 +1,142 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* CV page: the sphere in the middle, the fixed lists of sub-categories on the sides */
+
+.cv-map {
+  --beam: 2.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem var(--beam);
+  align-items: stretch;
+
+  /* small screens: sphere first, lists underneath */
+  .sky { order: -1; }
+
+  @include up($bp-xl) {
+    grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr);
+    .sky { order: 0; align-self: center; }
+  }
+}
+
+/* each column spreads its categories evenly along the height of the sphere */
+.cat-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+
+  @include up($bp-xl) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
+
+@for $i from 1 through $cat-count {
+  .cat--#{nth($cats, $i)} { --c: #{nth($cat-colors, $i)}; }
+}
+
+.cat {
+  --c: #fff;
+  position: relative;
+  padding-left: 1rem;
+  border-left: 2px solid var(--c);
+  box-shadow: -6px 0 14px -8px var(--c);
+  transition: box-shadow .3s, background .3s;
+
+  h3 { margin: 0 0 .35rem; font-size: 1.3rem; transition: color .3s, text-shadow .3s; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    transition: color .3s;
+
+    &::before {
+      content: '\2726';
+      position: absolute;
+      left: 0;
+      top: .15em;
+      font-size: .7em;
+      color: var(--c);
+      transition: text-shadow .3s;
+    }
+  }
+}
+
+/* a list lights up while its constellation is hovered, touched or focused on the sphere */
+@mixin cat-lit {
+  border-left-color: #fff;
+  box-shadow: -10px 0 26px -6px var(--c);
+  background: rgba($blue-deep, .45);
+
+  h3 { color: #fff; text-shadow: 0 0 .7em var(--c), 0 0 .2em var(--c); }
+  li { color: #fff; }
+  li::before { color: #fff; text-shadow: 0 0 .6em var(--c), 0 0 .2em var(--c); }
+  &::after { height: 3px; box-shadow: 0 0 24px 2px var(--c); }
+}
+@each $v in $cats {
+  .cv-map:has(.constellation--#{$v}:hover) .cat--#{$v},
+  .cv-map:has(.constellation--#{$v}:focus-within) .cat--#{$v} { @include cat-lit; }
+}
+
+/* wide screens: the left border becomes a beam of light reaching toward the sphere */
+@include up($bp-xl) {
+  .cat {
+    padding-left: 0;
+    border-left: 0;
+    box-shadow: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: .95rem;
+      width: var(--beam);
+      height: 2px;
+      box-shadow: 0 0 14px var(--c);
+    }
+  }
+  .cat-col--left .cat {
+    text-align: right;
+    &::after { right: calc(var(--beam) * -1); background: linear-gradient(90deg, transparent, var(--c)); }
+    li { padding-left: 0; padding-right: 1.1rem; }
+    li::before { left: auto; right: 0; }
+  }
+  .cat-col--right .cat::after { left: calc(var(--beam) * -1); background: linear-gradient(270deg, transparent, var(--c)); }
+}
+
+/* Controls under the sphere: Auto and Pause rotation */
+.sky-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem .75rem;
+  margin: 1.75rem auto 0;
+}
+.sky-controls label {
+  @include nav-surface;
+  @include mono;
+  padding: .45rem 1.3rem;
+  border-radius: 999px;
+  color: $ink;
+  font-size: .98rem;
+  line-height: 1.2;
+  cursor: pointer;
+  user-select: none;
+  transition: color .2s, border-color .2s, box-shadow .2s;
+
+  &:hover { color: $gold; }
+}
+
+@mixin btn-on { color: $gold; border-color: $gold; box-shadow: 0 0 16px rgba($gold, .35); }
+@each $m in auto, pause {
+  .sky:has(#motion-#{$m}:checked) [for='motion-#{$m}'] { @include btn-on; }
+  .sky:has(#motion-#{$m}:focus-visible) [for='motion-#{$m}'] { @include focus-ring; }
+}
+
+@include reduced-motion {
+  .sky-controls label, .cat, .cat h3, .cat li, .cat li::before { transition: none; }
+}

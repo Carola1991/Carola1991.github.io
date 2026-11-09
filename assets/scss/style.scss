@@ -1,0 +1,12 @@
+/* Compile with:  sass scss/style.scss css/style.css */
+@use 'variables';
+@use 'mixins';
+@use 'base';
+@use 'header';
+@use 'stars';
+@use 'sphere';
+@use 'cv-map';
+@use 'cv';
+@use 'hobbies';
+@use 'contact';
+@use 'print';

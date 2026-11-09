@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+@mixin up($bp)   { @media (min-width: $bp) { @content; } }
+@mixin down($bp) { @media (max-width: ($bp - .02px)) { @content; } }
+@mixin reduced-motion { @media (prefers-reduced-motion: reduce) { @content; } }
+
+/* halo around a star */
+@mixin halo($c: $gold) {
+  stroke: $c;
+  stroke-opacity: .28;
+  stroke-width: 9px;
+  paint-order: stroke;
+}
+
+/* same surface as the navigation menu */
+@mixin nav-surface {
+  background: rgba($blue-deep, .94);
+  border: 1px solid $line;
+}
+
+@mixin mono { font-family: $mono; letter-spacing: .03em; }
+@mixin focus-ring { outline: 2px solid $gold; outline-offset: 3px; }

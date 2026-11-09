@@ -1,0 +1,24 @@
+/* Colors */
+$blue-deep: #071447;
+$blue-mid:  #0d2a7a;
+$ink:       #f7f3e6;   
+$gold:      #ffd966;   
+$line:      rgba($gold, .55);
+$ice:       #a0cdff;   
+
+/* Fonts */
+$font: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+$mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+/* Breakpoints */
+$bp-sm: 576px;
+$bp-md: 768px;
+$bp-lg: 992px;
+$bp-xl: 1200px;
+
+/* Sphere: the categories, in the order they sit around it */
+$cats:       degree, training, itskills, soft, experience;
+$cat-colors: #7fdcff, #6c9bff, #9aa6ff, #bfe3ff, #5aa9ff;
+$cat-lats:   -20deg, 18deg, -18deg, 20deg, -14deg;
+$cat-count:  5;
+$cat-step:   .2;   
