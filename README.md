@@ -8,7 +8,7 @@ Everything is **HTML and CSS (Sass)**, without  JavaScript.
 
 <div align="center">
 
-## LINK: <https://carola1991.github.io/Personal-Website/>
+## LINK: <https://carola1991.github.io>
 
 
 </div>
