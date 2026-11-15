@@ -92,14 +92,14 @@ The site has three main pages, plus a plain-text version of the CV:
 ├── pages/
 │   ├──contact.html           # Contact: form and social links
 │   ├──cv.html                # CV as plain text, printable
-│   ├──hobbies.html           # Hobbies: Leo and the sub-categories
+│   └──hobbies.html           # Hobbies: Leo and the sub-categories
 ├── assets/
 │   ├── css/
 │       └── style.css         # CSS compiled from scss/
 │   ├──images
 │       ├── avatar.jpg        # my photo
 │       ├── favicon.jpg       # icon
-│       ├── og-image.jpg      # image for Open Graph tags
+│       └── og-image.jpg      # image for Open Graph tags
 │   ├── scss/
 │       ├── _base.scss        # reset, body, headings, footer
 │       ├── _contact.scss     # form and social links
@@ -113,7 +113,7 @@ The site has three main pages, plus a plain-text version of the CV:
 │       ├── _stars.scss       # shared stars and lines
 │       ├── _variables.scss   # colors, fonts, breakpoints, categories
 │       └── style.scss        # entry point (@use of the partials)
-├── README.md                 # in English
+└── README.md                 # in English
 
 ```
 
