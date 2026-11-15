@@ -1,0 +1,167 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* Hobbies: the constellation of Leo, and the sub-hobby overlays */
+
+.leo-wrap { max-width: 880px; margin: 0 auto; }
+.leo .star text { font-size: 20px; }
+
+html:has(.sub:target) { overflow: hidden; }
+
+.sub {
+  --rays: min(190vmin, 1500px);
+  --disc: min(94vw, 680px, 90vh);
+  --ripple: min(80vmin, 560px);
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s, visibility 0s .8s;
+
+  &:target { visibility: visible; opacity: 1; pointer-events: auto; transition: opacity .4s, visibility 0s; }
+}
+
+.sub-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(13, 42, 122, .78), rgba(4, 10, 40, .94));
+  backdrop-filter: blur(6px);
+  cursor: zoom-out;
+}
+
+/* rotating rays behind the disc */
+.sub-rays {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--rays);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  scale: .3;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba($gold, .1) 0 4deg, transparent 4deg 18deg);
+  -webkit-mask: radial-gradient(circle, #000 5%, transparent 60%);
+          mask: radial-gradient(circle, #000 5%, transparent 60%);
+  pointer-events: none;
+  transition: scale .9s ease-out;
+}
+.sub:target .sub-rays { scale: 1; animation: rays 90s linear infinite; }
+@keyframes rays { to { rotate: 360deg; } }
+
+/* shock-wave rings */
+.ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--ripple);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 2px solid rgba($gold, .7);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.sub:target .ripple { animation: ripple 1.8s ease-out both; animation-delay: calc(var(--i) * .35s); }
+@keyframes ripple {
+  from { scale: .2; opacity: .9; }
+  to   { scale: 1.9; opacity: 0; }
+}
+
+/* the glass disc */
+.sub-disc {
+  position: relative;
+  width: var(--disc);
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 13% 9% 10%;
+  border-radius: 50%;
+  border: 1px solid rgba(#fff, .4);
+  background:
+    radial-gradient(circle at 30% 22%, rgba(#fff, .22), transparent 28%),
+    radial-gradient(circle at 50% 50%, rgba(110, 160, 255, .08) 55%, rgba(120, 170, 255, .30) 100%);
+  box-shadow: inset 0 0 70px rgba(150, 190, 255, .28), 0 0 80px rgba($gold, .18);
+  scale: .2;
+  rotate: -120deg;
+  opacity: 0;
+  transition: scale .8s cubic-bezier(.2, 1.25, .35, 1), rotate .8s ease-out, opacity .5s;
+}
+.sub:target .sub-disc { scale: 1; rotate: 0deg; opacity: 1; }
+
+.sub-title { margin: 0; font-size: clamp(1.8rem, 6vw, 2.8rem); line-height: 1.1; }
+.sub-text { margin: .25rem 0 0; max-width: 30ch; font-size: clamp(.95rem, 2.6vw, 1.2rem); }
+
+/* the mini constellation of sub-hobbies */
+.sub-map { width: 100%; height: auto; overflow: visible; margin-top: .25rem; }
+.sub-line { stroke: rgba($gold, .7); stroke-width: 1.5; stroke-dasharray: 1; }
+.sub:target .sub-line { animation: draw .7s ease-out both; animation-delay: calc(.5s + var(--i) * .2s); }
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.sub-star {
+  transform-box: fill-box;
+  transform-origin: center;
+
+  circle {
+    fill: $gold;
+    @include halo;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform .25s ease;
+  }
+  &:hover circle { transform: scale(1.6); fill: #fff; }
+  text {
+    fill: $ink;
+    font-family: $font;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 21px;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: $blue-deep;
+    stroke-width: 4px;
+    stroke-linejoin: round;
+  }
+}
+
+.sub-map--wide .sub-star text { font-size: 19.5px; }
+
+.sub:target .sub-star { animation: pop .7s cubic-bezier(.2, 1.7, .4, 1) both; animation-delay: calc(.4s + var(--i) * .18s); }
+.sub:target .sub-star circle { animation: twinkle 3s ease-in-out infinite; animation-delay: calc(1.5s + var(--i) * .4s); }
+@keyframes pop {
+  from { opacity: 0; scale: 0; }
+  to   { opacity: 1; scale: 1; }
+}
+@keyframes twinkle { 50% { scale: 1.35; } }
+
+.sub-close {
+  @include mono;
+  margin-top: .5rem;
+  padding: .15rem 1.2rem;
+  border-radius: 999px;
+  background: $gold;
+  color: $blue-deep;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: box-shadow .2s, background .2s;
+
+  &:hover, &:focus-visible { background: #fff; box-shadow: 0 0 16px rgba($gold, .8); }
+}
+
+@include reduced-motion {
+  .sub, .sub-disc, .sub-rays, .sub-star circle { transition: none; }
+  .sub:target {
+    .sub-rays, .ripple, .sub-line, .sub-star, .sub-star circle { animation: none; }
+  }
+}

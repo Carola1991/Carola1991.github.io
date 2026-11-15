@@ -1,0 +1,42 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* Stars and lines shared by the Leo map (hobbies) and the sphere (CV) */
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  line { stroke: $line; stroke-width: 1.2; stroke-dasharray: 3 4; }
+
+  .star {
+    cursor: pointer;
+    outline: none;
+
+    circle {
+      fill: $gold;
+      @include halo;
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: transform .25s ease;
+    }
+    text {
+      fill: $ink;
+      font-family: $font;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 14px;
+      paint-order: stroke;
+      stroke: $blue-deep;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+    &:hover circle, &:focus-visible circle { transform: scale(1.7); fill: #fff; }
+    &:focus-visible text { fill: $gold; }
+  }
+}
+
+@include reduced-motion {
+  .map .star circle { transition: none; }
+}

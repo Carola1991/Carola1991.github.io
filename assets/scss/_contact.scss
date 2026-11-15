@@ -1,0 +1,90 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* Contact: form and social links */
+
+.contact {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 2.5rem;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.contact-form { width: 100%; }
+
+.contact-form {
+  .form-label { @include mono; color: $gold; font-size: 1rem; }
+
+  .form-control {
+    background: rgba($blue-deep, .6);
+    color: $ink;
+    border: 1px solid $line;
+    border-radius: 4px;
+    font-family: $font;
+    font-style: italic;
+    font-size: 1.2rem;
+
+    &:focus {
+      background: rgba($blue-deep, .85);
+      color: $ink;
+      border-color: $gold;
+      box-shadow: 0 0 0 .2rem rgba($gold, .3);
+    }
+    /* native validation messages: only after the person has touched the field */
+    &:user-invalid { border-color: #ff9c8f; }
+  }
+}
+
+.btn-star {
+  @include mono;
+  background: $gold;
+  color: $blue-deep;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: .45rem 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  transition: box-shadow .2s;
+
+  &:hover, &:focus-visible { background: #fff; color: $blue-deep; box-shadow: 0 0 16px rgba($gold, .8); }
+}
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  text-align: center;
+
+  h3 { font-size: 1.5rem; margin: 0; }
+  .socials-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 2rem; }
+
+  a {
+    @include mono;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    color: $ink;
+    font-size: 1.1rem;
+    text-decoration: none;
+
+    i {
+      display: grid;
+      place-items: center;
+      width: 2.6rem;
+      height: 2.6rem;
+      border: 1px solid $gold;
+      border-radius: 50%;
+      color: $gold;
+      font-style: normal;
+      transition: background .2s, color .2s;
+    }
+    &:hover, &:focus-visible { color: $gold; i { background: $gold; color: $blue-deep; } }
+  }
+}
+
+@include reduced-motion {
+  .btn-star, .socials a i { transition: none; }
+}

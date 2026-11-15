@@ -1,0 +1,62 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* Header (Flexbox) */
+.site-header {
+  --avatar: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem;
+
+  @include up($bp-md) { --avatar: 120px; padding: 2rem 1rem; }
+
+  &::after { content: ''; flex: 0 0 var(--avatar); }
+
+  .avatar {
+    flex: 0 0 var(--avatar);
+    width: var(--avatar);
+    height: var(--avatar);
+    border-radius: 50%;
+    border: 2px solid $gold;
+    box-shadow: 0 0 18px rgba($gold, .45);
+    object-fit: cover;
+  }
+  .titles { flex: 1; text-align: center; }
+  h1 { margin: 0; font-size: clamp(1.9rem, 6vw, 3.6rem); line-height: 1.1; }
+  .subtitle { margin: .25rem 0 0; font-size: clamp(1.05rem, 3vw, 1.6rem); color: $ink; }
+}
+
+/* Sticky menu (Bootstrap navbar, hamburger menu without JavaScript) */
+/* A hidden checkbox holds the open/closed state, the label is the hamburger button. */
+.site-nav {
+  @include nav-surface;
+  border-width: 1px 0;
+  z-index: 1500;             
+  transform: translateZ(0);  
+  backdrop-filter: blur(6px);
+
+  .navbar-brand { @include mono; color: $gold; font-size: 1.1rem; }
+  .navbar-toggler { border-color: $line; cursor: pointer; }
+  .nav-link {
+    @include mono;
+    color: $ink;
+    font-size: 1.05rem;
+    padding: .5rem 1.6rem;
+    transition: color .2s;
+
+    &:hover, &:focus, &.active { color: $gold; }
+    &.active { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+  }
+
+  .nav-toggle { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .nav-toggle:focus-visible ~ .navbar-toggler { @include focus-ring; }
+
+  @include down($bp-md) {
+    .navbar-collapse { display: none; width: 100%; }
+    .nav-toggle:checked ~ .navbar-collapse { display: block; }
+  }
+}
